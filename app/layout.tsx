@@ -1,31 +1,48 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Plus_Jakarta_Sans, Noto_Sans_Gujarati, Noto_Sans_Devanagari } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 
-const inter = Inter({
-  subsets: ["latin"],
+const inter = localFont({
+  src: [
+    { path: "./fonts/inter-latin-400-normal.woff2", weight: "400", style: "normal" },
+    { path: "./fonts/inter-latin-500-normal.woff2", weight: "500", style: "normal" },
+    { path: "./fonts/inter-latin-600-normal.woff2", weight: "600", style: "normal" },
+  ],
   display: "swap",
   variable: "--font-inter",
+  fallback: ["system-ui", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "Roboto", "sans-serif"],
 });
 
-const plusJakartaSans = Plus_Jakarta_Sans({
-  subsets: ["latin"],
+const plusJakartaSans = localFont({
+  src: [
+    { path: "./fonts/plus-jakarta-sans-latin-600-normal.woff2", weight: "600", style: "normal" },
+    { path: "./fonts/plus-jakarta-sans-latin-700-normal.woff2", weight: "700", style: "normal" },
+  ],
   display: "swap",
   variable: "--font-plus-jakarta",
+  fallback: ["system-ui", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "Roboto", "sans-serif"],
 });
 
-const notoGujarati = Noto_Sans_Gujarati({
-  subsets: ["gujarati"],
+const notoGujarati = localFont({
+  src: [
+    { path: "./fonts/noto-sans-gujarati-gujarati-400-normal.woff2", weight: "400", style: "normal" },
+    { path: "./fonts/noto-sans-gujarati-gujarati-500-normal.woff2", weight: "500", style: "normal" },
+    { path: "./fonts/noto-sans-gujarati-gujarati-600-normal.woff2", weight: "600", style: "normal" },
+  ],
   display: "swap",
   variable: "--font-noto-gujarati",
-  weight: ["400", "500", "600", "700"],
+  fallback: ["system-ui", "sans-serif"],
 });
 
-const notoDevanagari = Noto_Sans_Devanagari({
-  subsets: ["devanagari"],
+const notoDevanagari = localFont({
+  src: [
+    { path: "./fonts/noto-sans-devanagari-devanagari-400-normal.woff2", weight: "400", style: "normal" },
+    { path: "./fonts/noto-sans-devanagari-devanagari-500-normal.woff2", weight: "500", style: "normal" },
+    { path: "./fonts/noto-sans-devanagari-devanagari-600-normal.woff2", weight: "600", style: "normal" },
+  ],
   display: "swap",
   variable: "--font-noto-devanagari",
-  weight: ["400", "500", "600", "700"],
+  fallback: ["system-ui", "sans-serif"],
 });
 
 export const viewport: Viewport = {
