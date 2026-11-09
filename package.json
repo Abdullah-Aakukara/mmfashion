@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "npx serve out",
     "serve": "npx serve out",
+    "zip": "powershell -Command \"Compress-Archive -Path out\\* -DestinationPath out.zip -Force\"",
     "lint": "next lint"
   },
   "dependencies": {

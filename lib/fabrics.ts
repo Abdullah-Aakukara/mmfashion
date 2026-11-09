@@ -99,7 +99,13 @@ function processRawRows(rawRows: RawRow[], sourceName: string): Fabric[] {
     }
     seenIds.add(id.toLowerCase());
 
-    const type = String(getField(row, "type") || "Fabric").trim();
+    // Type with fallback to aliases or duplicate column name_1 from sheet typos
+    const typeRaw =
+      getField(row, "type") ||
+      getField(row, "fabric_type") ||
+      getField(row, "category") ||
+      getField(row, "name_1");
+    const type = String(typeRaw || "Viscose").trim();
     const compositionRaw = getField(row, "composition");
     const composition = compositionRaw ? String(compositionRaw).trim() : undefined;
 
@@ -193,7 +199,6 @@ export async function getAllFabrics(): Promise<Fabric[]> {
 
       const response = await fetch(sheetUrl, {
         signal: controller.signal,
-        cache: "no-store",
       });
       clearTimeout(timeoutId);
 

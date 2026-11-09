@@ -9,9 +9,9 @@
  * Enforces a 10-minute cooldown between build triggers using PropertiesService.
  */
 
-// Replace this with your actual Cloudflare Pages Deploy Hook URL
-// (Cloudflare Dashboard > Workers & Pages > mm-fashion > Settings > Builds & deployments > Deploy hooks)
-const CLOUDFLARE_DEPLOY_HOOK_URL = "https://api.cloudflare.com/client/v4/pages/webhooks/deploy_hooks/https://api.cloudflare.com/client/v4/workers/builds/deploy_hooks/34304faa-abd7-49fc-b790-8d76fc2ab864";
+// Replace this with your actual Cloudflare Deploy Hook URL
+// (Cloudflare Dashboard > Workers & Pages > mmfashion > Settings > Builds & deployments > Deploy hooks)
+const CLOUDFLARE_DEPLOY_HOOK_URL = "https://api.cloudflare.com/client/v4/workers/builds/deploy_hooks/34304faa-abd7-49fc-b790-8d76fc2ab864";
 
 // Cooldown period: 10 minutes in milliseconds
 const COOLDOWN_MS = 10 * 60 * 1000;
@@ -54,14 +54,20 @@ function triggerWebsiteBuild() {
     return;
   }
 
+  // Clean URL in case someone accidentally prepends a duplicate prefix
+  let targetUrl = (CLOUDFLARE_DEPLOY_HOOK_URL || "").trim();
+  if (targetUrl.includes("https://", 8)) {
+    targetUrl = targetUrl.substring(targetUrl.lastIndexOf("https://"));
+  }
+
   // Validate placeholder
   if (
-    !CLOUDFLARE_DEPLOY_HOOK_URL ||
-    CLOUDFLARE_DEPLOY_HOOK_URL.includes("REPLACE_WITH_YOUR_DEPLOY_HOOK_ID")
+    !targetUrl ||
+    targetUrl.includes("REPLACE_WITH_YOUR_DEPLOY_HOOK_ID")
   ) {
     ui.alert(
       "Deploy Hook Not Configured",
-      "Please open Extensions > Apps Script and set CLOUDFLARE_DEPLOY_HOOK_URL with your actual Cloudflare Pages Deploy Hook URL.",
+      "Please open Extensions > Apps Script and set CLOUDFLARE_DEPLOY_HOOK_URL with your actual Cloudflare Deploy Hook URL.",
       ui.ButtonSet.OK
     );
     return;
@@ -77,7 +83,7 @@ function triggerWebsiteBuild() {
       },
     };
 
-    const response = UrlFetchApp.fetch(CLOUDFLARE_DEPLOY_HOOK_URL, options);
+    const response = UrlFetchApp.fetch(targetUrl, options);
     const responseCode = response.getResponseCode();
 
     if (responseCode >= 200 && responseCode < 300) {

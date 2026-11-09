@@ -9,6 +9,8 @@
 # next.js
 /.next/
 /out/
+out.zip
+.wrangler/
 
 # production
 /build
